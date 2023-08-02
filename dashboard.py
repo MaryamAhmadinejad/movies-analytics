@@ -81,25 +81,6 @@ df = pd.DataFrame(result.all(), columns=result.keys())
 
 st.dataframe(df)
 
-
-#############################################################################################################
-#############################################################################################################
-#############################################################################################################
-st.title("part1")
-st.header("section3")
-
-actors = st.multiselect(
-    label = "actor",
-    options = casts_list,
-)
-
-
-# with engine.connect() as conn:
-    # result = conn.execute(text(f"SELECT movie_id AS id, title, year, runtime, parental_guide, gross_us_canada FROM cast INNER JOIN movie ON movie.id = cast.movie_id INNER JOIN person ON cast.person_id = person.id WHERE person.name IN {tuple(['Charles Chaplin'])};"))
-# df = pd.DataFrame(result.all(), columns=result.keys())
-# st.dataframe(df)
-
-
 #############################################################################################################
 #############################################################################################################
 #############################################################################################################
