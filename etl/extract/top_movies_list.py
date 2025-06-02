@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from consts import TMDB_BASE_API_URL_V3, TMDB_API_KEY, TMDB_TOP_RATED_MOVIES_LIST_API_PATH
+from consts import TMDB_BASE_API_URL_V3, TMDB_API_KEY, TMDB_TOP_RATED_MOVIES_LIST_API_PATH, RAW_TOP_RATED_MOVIES_LIST_DATA_PATH
 
 
 def get_top_rated_movies(pages: int) -> list[dict]:
@@ -25,7 +25,7 @@ def get_top_rated_movies(pages: int) -> list[dict]:
 def save_movies_data(movies: list) -> None:
     print(f'✅ Got {len(top_movies)} movies.')
 
-    with open('data/raw/top_movies_tmdb_list.json', 'w', encoding='utf-8') as f:
+    with open(RAW_TOP_RATED_MOVIES_LIST_DATA_PATH, 'w', encoding='utf-8') as f:
         json.dump(top_movies, f, ensure_ascii=False, indent=2)
 
 
