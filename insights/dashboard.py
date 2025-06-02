@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from sqlalchemy import URL, create_engine, select, text
+from sqlalchemy import URL, create_engine, text
 
 
 MYSQL_DRIVER = "mysql+mysqlconnector"
@@ -28,7 +28,7 @@ with engine.connect() as conn:
 genres_list = pd.DataFrame(result.all())
 
 with engine.connect() as conn:
-    result = conn.execute(text(f"SELECT DISTINCT name FROM cast INNER JOIN person ON cast.person_id = person.id;"))
+    result = conn.execute(text("SELECT DISTINCT name FROM cast INNER JOIN person ON cast.person_id = person.id;"))
 casts_list = pd.DataFrame(result.all())
 
 
@@ -42,12 +42,12 @@ min_year = 1000
 max_year = 2024
 
 start_year = st.selectbox(
-    label = "start year",
-    options = [x for x in range(min_year, max_year)],
+    label="start year",
+    options=[x for x in range(min_year, max_year)],
 )
 end_year = st.selectbox(
-    label = "end year",
-    options = [x for x in reversed(range(min_year, max_year))],
+    label="end year",
+    options=[x for x in reversed(range(min_year, max_year))],
 )
 
 with engine.connect() as conn:
@@ -67,12 +67,12 @@ min_runtime = 45
 max_runtime = 239
 
 start_runtime = st.selectbox(
-    label = "start runtime",
-    options = [x for x in range(min_runtime, max_runtime)],
+    label="start runtime",
+    options=[x for x in range(min_runtime, max_runtime)],
 )
 end_runtime = st.selectbox(
-    label = "end runtime",
-    options = [x for x in reversed(range(min_runtime, max_runtime))],
+    label="end runtime",
+    options=[x for x in reversed(range(min_runtime, max_runtime))],
 )
 
 with engine.connect() as conn:
@@ -88,8 +88,8 @@ st.title("part1")
 st.header("section4")
 
 genre_name_movies = st.selectbox(
-    label = "genre1",
-    options = genres_list,
+    label="genre1",
+    options=genres_list,
 )
 
 with engine.connect() as conn:
@@ -118,7 +118,7 @@ st.title("part2")
 st.header("section2")
 
 with engine.connect() as conn:
-    result = conn.execute(text(f"SELECT name, COUNT(movie_id) AS number_of_movies FROM cast INNER JOIN person ON cast.person_id = person.id GROUP BY name ORDER BY number_of_movies DESC, name LIMIT 5;"))
+    result = conn.execute(text("SELECT name, COUNT(movie_id) AS number_of_movies FROM cast INNER JOIN person ON cast.person_id = person.id GROUP BY name ORDER BY number_of_movies DESC, name LIMIT 5;"))
 
 casts_data = pd.DataFrame(result.all()).set_index('name')
 st.bar_chart(casts_data)
@@ -130,8 +130,8 @@ st.title("part3")
 
 
 genre_name_gross = st.selectbox(
-    label = "genre",
-    options = genres_list,
+    label="genre",
+    options=genres_list,
 )
 
 with engine.connect() as conn:
@@ -139,4 +139,3 @@ with engine.connect() as conn:
 df = pd.DataFrame(result.all()).set_index('title')
 
 st.bar_chart(df)
-

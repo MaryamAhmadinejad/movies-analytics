@@ -37,6 +37,7 @@ url_object = URL.create(
 )
 engine = create_engine(url_object)
 
+
 class Base(DeclarativeBase):
     pass
 
@@ -46,11 +47,11 @@ class Movie(Base):
 
     id: Mapped[str] = mapped_column(VARCHAR(8), primary_key=True)
     title: Mapped[str] = mapped_column(VARCHAR(128))
-    year : Mapped[int] = mapped_column(Integer())
-    runtime : Mapped[int] = mapped_column(Integer())
-    parental_guide : Mapped[str] = mapped_column(VARCHAR(8))
-    gross_us_canada : Mapped[int] = mapped_column(Integer(), nullable=True)
-    rank : Mapped[int] = mapped_column(Integer())
+    year: Mapped[int] = mapped_column(Integer())
+    runtime: Mapped[int] = mapped_column(Integer())
+    parental_guide: Mapped[str] = mapped_column(VARCHAR(8))
+    gross_us_canada: Mapped[int] = mapped_column(Integer(), nullable=True)
+    rank: Mapped[int] = mapped_column(Integer())
     genres: Mapped[List["GenreMovie"]] = relationship(back_populates="movie")
     casts: Mapped[List["Cast"]] = relationship(back_populates="movie")
     crews: Mapped[List["Crew"]] = relationship(back_populates="movie")
@@ -83,7 +84,7 @@ class Crew(Base):
     movie: Mapped["Movie"] = relationship(back_populates="crews")
     person_id: Mapped[int] = mapped_column(ForeignKey("person.id"))
     person: Mapped["Person"] = relationship(back_populates="crews")
-    role : Mapped[str] = mapped_column(VARCHAR(8))
+    role: Mapped[str] = mapped_column(VARCHAR(8))
 
 
 class GenreMovie(Base):
@@ -100,11 +101,11 @@ Base.metadata.create_all(bind=engine)
 session = Session(engine)
 
 ###########################################
-### INSERT MOVIES
+# INSERT MOVIES
 ###########################################
 with open('movies.json') as user_file:
-  file_contents = user_file.read()
-  parsed_json_1 = json.loads(file_contents)
+    file_contents = user_file.read()
+    parsed_json_1 = json.loads(file_contents)
 
 for movie in parsed_json_1:
     new_data = Movie(
@@ -120,11 +121,11 @@ for movie in parsed_json_1:
 
 
 ###########################################
-### INSERT GENRES
+# INSERT GENRES
 ###########################################
 with open('genres.json') as user_file:
-  file_contents = user_file.read()
-  parsed_json = json.loads(file_contents)
+    file_contents = user_file.read()
+    parsed_json = json.loads(file_contents)
 
 for genre in parsed_json:
     movie = session.get(Movie, genre['movie_id'])
@@ -136,28 +137,28 @@ for genre in parsed_json:
 
 
 ###########################################
-### INSERT PEOPLE
+# INSERT PEOPLE
 ###########################################
 with open('people.json') as user_file:
-  file_contents = user_file.read()
-  parsed_json = json.loads(file_contents)
+    file_contents = user_file.read()
+    parsed_json = json.loads(file_contents)
 
 for person in parsed_json:
     person_record = session.get(Person, person['person_id'])
     if not person_record:
         new_data = Person(
-            id = person['person_id'],
-            name = person['name']
+            id=person['person_id'],
+            name=person['name']
         )
         session.add(new_data)
 
 
 ###########################################
-### INSERT CASTS
+# INSERT CASTS
 ###########################################
 with open('casts.json') as user_file:
-  file_contents = user_file.read()
-  parsed_json = json.loads(file_contents)
+    file_contents = user_file.read()
+    parsed_json = json.loads(file_contents)
 
 for cast in parsed_json:
     movie = session.get(Movie, cast['movie_id'])
@@ -170,11 +171,11 @@ for cast in parsed_json:
 
 
 ###########################################
-### INSERT CREWS
+# INSERT CREWS
 ###########################################
 with open('crews.json') as user_file:
-  file_contents = user_file.read()
-  parsed_json = json.loads(file_contents)
+    file_contents = user_file.read()
+    parsed_json = json.loads(file_contents)
 
 for crew in parsed_json:
     movie = session.get(Movie, crew['movie_id'])
