@@ -1,5 +1,5 @@
 from etl.utils import load_json, save_json
-from etl.extract.consts import RAW_TOP_RATED_MOVIES_INFO_PATH
+from etl.extract.consts import RAW_TOP_RATED_MOVIES_CREDITS_PATH
 
 
 def extract_unique_people(input_data, gender_map) -> list:
@@ -22,7 +22,7 @@ def extract_unique_people(input_data, gender_map) -> list:
 
 
 if __name__ == '__main__':
-    movies = load_json(RAW_TOP_RATED_MOVIES_INFO_PATH)
+    movies = load_json(RAW_TOP_RATED_MOVIES_CREDITS_PATH)
     gender_map = load_json('data/processed/gender_map.json')
     people = extract_unique_people(movies, gender_map)
     print(f"✅ Extracted {len(people)} unique people.")
