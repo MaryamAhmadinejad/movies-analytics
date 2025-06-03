@@ -1,12 +1,8 @@
-from sqlalchemy import create_engine
-from models import Base
+from database.session import engine
+from database.models import Base
 
 
-DB_PATH = 'sqlite:///database/imdb.db'
-
-
-def init_db(db_path=DB_PATH):
-    engine = create_engine(db_path)
+def init_db():
     Base.metadata.create_all(engine)
     print('✅ Database and tables created!')
 
