@@ -1,6 +1,6 @@
-import json
 import requests
-from consts import TMDB_BASE_API_URL_V3, TMDB_API_KEY, TMDB_GENRES_LIST_API_PATH, RAW_GENRES_DATA_PATH
+from etl.utils import load_json, save_json
+from etl.extract.consts import TMDB_BASE_API_URL_V3, TMDB_API_KEY, TMDB_GENRES_LIST_API_PATH, RAW_GENRES_DATA_PATH
 
 
 def fetch_genres_from_api():
@@ -12,22 +12,19 @@ def fetch_genres_from_api():
     })
     response.raise_for_status()
     data = response.json().get('genres', [])
-    # save data
-    with open(RAW_GENRES_DATA_PATH, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2, separators=(', ', ': '))
-    print(f'✅ Saved {len(data)} genres to {RAW_GENRES_DATA_PATH}')
     return data
 
 
 def load_or_fetch_genres():
     try:
-        with open('data/raw/genres_list.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = load_json(RAW_GENRES_DATA_PATH)
         print('✅ Data Exist!')
         return data
-    except (FileNotFoundError, json.JSONDecodeError) as error:
+    except FileNotFoundError as error:
         print(f'⚠️  Error reading existing file: {error}')
         data = fetch_genres_from_api()
+        save_json(data, RAW_GENRES_DATA_PATH)
+        print(f'✅ Saved {len(data)} genres to {RAW_GENRES_DATA_PATH}')
         return data
 
 
