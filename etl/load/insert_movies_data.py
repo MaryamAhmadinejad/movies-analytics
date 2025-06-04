@@ -1,9 +1,18 @@
 from etl.utils import load_json
-from database.models import Movie
+from database.models import Genre, Movie, GenreMovie
 from database.session import SessionLocal
 
 
-def load_to_sqlite():
+def load_genres_to_db():
+    genres = load_json('data/raw/genres_list.json')
+    with SessionLocal() as session:
+        for g in genres:
+            session.merge(Genre(id=g["id"], title=g["name"]))
+        session.commit()
+    print(f"✅ Loaded {len(genres)} genres (insert/update safe).")
+
+
+def load_movies_to_db():
     movies = load_json('data/raw/top_movies_info.json')
     with SessionLocal() as session:
         for movie_dict in movies:
@@ -19,5 +28,11 @@ def load_to_sqlite():
                 vote_average=float(movie_dict['vote_average']),
             )
             session.merge(movie)
+            for genre in movie_dict['genres']:
+                g_m = GenreMovie(
+                    movie_id=movie_dict['id'],
+                    genre_id=genre['id']
+                )
+                session.merge(g_m)
         session.commit()
     print(f"✅ Loaded {len(movies)} movies (insert/update safe).")
