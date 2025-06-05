@@ -22,6 +22,7 @@ class Movie(Base):
     id: Mapped[int] = mapped_column(Integer(), primary_key=True)
     title: Mapped[str] = mapped_column(VARCHAR(128))
     release_year: Mapped[int] = mapped_column(Integer())
+    origin_country: Mapped[str] = mapped_column(VARCHAR(4))
     original_language: Mapped[str] = mapped_column(VARCHAR(8))
     runtime: Mapped[int] = mapped_column(Integer())
     budget: Mapped[int] = mapped_column(Integer())

@@ -21,6 +21,7 @@ def load_movies_to_db():
                 title=movie_dict['title'],
                 runtime=int(movie_dict['runtime']),
                 release_year=int(movie_dict['release_date'][:4]),
+                origin_country=movie_dict['origin_country'][0],
                 original_language=movie_dict['original_language'],
                 budget=int(movie_dict['budget']),
                 revenue=int(movie_dict['revenue']),
